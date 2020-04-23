@@ -1,12 +1,16 @@
 package com.bridgelabz.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -38,6 +42,27 @@ public class User {
 	
 	@Column(name="datetime")
 	private LocalDateTime dateTime;
+	
+//	@OneToMany(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "userId")
+//	private List<Note> noteList;
+	
+	
+
+	public User() {
+	}
+
+	public User(long userid, String name, String password, long phone, String email, boolean isVerified,
+			LocalDateTime dateTime) {
+		super();
+		this.userid = userid;
+		this.name = name;
+		this.password = password;
+		this.phone = phone;
+		this.email = email;
+		this.isVerified = isVerified;
+		this.dateTime = dateTime;
+	}
 
 	public long getUserid() {
 		return userid;
@@ -93,6 +118,15 @@ public class User {
 
 	public void setDateTime(LocalDateTime dateTime) {
 		this.dateTime = dateTime;
+	}
+
+	
+	
+
+	@Override
+	public String toString() {
+		return "User [userid=" + userid + ", name=" + name + ", password=" + password + ", phone=" + phone + ", email="
+				+ email + ", isVerified=" + isVerified + ", dateTime=" + dateTime + "]";
 	}
 	
 	

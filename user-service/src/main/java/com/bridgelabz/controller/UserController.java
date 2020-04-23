@@ -89,10 +89,11 @@ public class UserController {
 	public User getUserById(@PathVariable("token") String token) {
 		System.out.println("3 inside USerService controller");
 		User user = userService.getUserById(token);
+		System.out.println("USer service hash "+user.hashCode());
 		if(user!=null) 
 		{
-			System.out.println("4 retrieved user"+user);
-			return user;
+			System.out.println("4 retrieved user "+user);
+			return new User(user.getUserid(), user.getName(), user.getPassword(), user.getPhone(), user.getEmail(), user.isVerified(), user.getDateTime());
 		}
 		else
 			System.out.println("USer Not Found in User Service....");
