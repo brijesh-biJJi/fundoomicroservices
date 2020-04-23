@@ -15,6 +15,7 @@ import com.bridgelabz.dto.NoteDto;
 import com.bridgelabz.entity.Note;
 import com.bridgelabz.entity.User;
 import com.bridgelabz.exceptions.UserNotFoundException;
+import com.bridgelabz.repository.IUserRepo;
 import com.bridgelabz.repository.NoteRepo;
 import com.bridgelabz.utility.JWTGenerator;
 
@@ -26,6 +27,10 @@ public class NoteServiceImpl implements INoteService{
 	
 	@Autowired
 	private NoteRepo noteRepo;
+	
+	@Autowired
+	private IUserRepo userRepo;
+	
 	
 	@Autowired
 	private JWTGenerator jwtGenerate;
@@ -47,24 +52,27 @@ public class NoteServiceImpl implements INoteService{
 	{
 		System.out.println("2 Inside Note service");
 		
-//		Long userId = (Long) jwtGenerate.parseToken(token);
-//		userInfo = userRepo.findUserById(userId);
+
 		
 //		User userInfo=restTemplate.getForObject("http://localhost:8765/user-service/user/getuser"+"/"+token, User.class);
 		
 		User userInfo=proxy.getUserById(token);
+		System.out.println();
+		System.out.println("USer note service hash "+userInfo.hashCode());
+		
 		System.out.println("5 User in NoteService "+userInfo);
 		if (userInfo != null)
 		{
 			System.out.println("About to create note");
 			noteInfo = model.map(noteDtoInfo, Note.class);
+			
 			noteInfo.setCreatedAt(LocalDateTime.now());
 			noteInfo.setArchieved(false);
 			noteInfo.setPinned(false);
 			noteInfo.setTrashed(false);
 			noteInfo.setColor("white");
+			noteInfo.setUser(userInfo);
 			Note note = noteRepo.save(noteInfo);
-			
 			System.out.println("After note repo");
 			return noteInfo;
 		}
